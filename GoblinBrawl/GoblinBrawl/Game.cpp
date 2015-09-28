@@ -63,7 +63,7 @@ Game::~Game() {
 
 bool Game::Init() {
 	camera = Camera();
-	camera.Init( AspectRatio() );
+	
 
 	if( !InitMainWindow() ) {
 		return false;
@@ -81,6 +81,8 @@ bool Game::Init() {
 	if( !LoadGameObjects() ) {
 		return false;
 	}
+
+	camera.Init(AspectRatio());
 	return true;
 }
 
@@ -470,7 +472,7 @@ void Game::Update( float dt ) {
 	fakePlayerPos = goblin.getPos();
 
 	camera.Update( dt, goblin.getPos(), fakePlayerPos );
-	camera.SetPos(0.f, 6.f, 20.f);
+	//camera.SetPos(0.f, 6.f, 20.f);
 
 }
 

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Camera.h"
-#include "Goblin.h"
-#include "Game.h"
+
 /* 
 Toggle DEV Camera on or off with HOME key
 DEV Camera controls are;
@@ -26,7 +25,7 @@ look( 0.0f, 0.0f, 1.0f )
 
 Camera::~Camera() {}
 
-void Camera::Init(float aspectRatio) {
+void XM_CALLCONV Camera::Init(float aspectRatio) {
 	SetAspect( aspectRatio );
 	SetLens( 0.25 * 3.14, aspect, 1.0f, 1000.0f );
 }
@@ -69,18 +68,14 @@ void XM_CALLCONV Camera::Update( float deltaTime, FXMVECTOR player1Pos, FXMVECTO
 	} else {
 
 		// default camera
-		// reset all settings
-		
-		SetPos( 0.0f, 10.0f, 0.0f );
-		
-		LookAt( GetPosXM(), -(target1), GetUpXM() );
-		
+		// Following LookAt setup shows blue screen! WTH!
+		// LookAt( GetPosXM(), target1, GetUpXM() );
 	}
 
 	UpdateViewMatrix();
 }
 
-void Camera::SetLens( float ifovAngleY, float iaspect, float inear, float ifar ) {
+void XM_CALLCONV Camera::SetLens(float ifovAngleY, float iaspect, float inear, float ifar) {
 	fovY = ifovAngleY;
 	aspect = iaspect;
 	nearZ = inear;
@@ -92,34 +87,34 @@ void Camera::SetLens( float ifovAngleY, float iaspect, float inear, float ifar )
 	XMStoreFloat4x4( &proj, P );
 }
 
-XMVECTOR Camera::GetPosXM() const {
+XMVECTOR XM_CALLCONV Camera::GetPosXM() const {
 	return XMLoadFloat3( &pos );
 }
-XMFLOAT3 Camera::GetPos() const {
+XMFLOAT3 XM_CALLCONV Camera::GetPos() const {
 	return pos;
 }
-void Camera::SetPos( float x, float y, float z ) {
+void XM_CALLCONV Camera::SetPos(float x, float y, float z) {
 	pos = XMFLOAT3( x, y, z );
 }
-void Camera::SetPos( const XMFLOAT3& v ) {
+void XM_CALLCONV Camera::SetPos(const XMFLOAT3& v) {
 	pos = v;
 }
-XMVECTOR Camera::GetRightXM() const {
+XMVECTOR XM_CALLCONV Camera::GetRightXM() const {
 	return XMLoadFloat3( &right );
 }
-XMFLOAT3 Camera::GetRight() const {
+XMFLOAT3 XM_CALLCONV Camera::GetRight() const {
 	return right;
 }
-XMVECTOR Camera::GetUpXM() const {
+XMVECTOR XM_CALLCONV Camera::GetUpXM() const {
 	return XMLoadFloat3( &up );
 }
-XMFLOAT3 Camera::GetUp() const {
+XMFLOAT3 XM_CALLCONV Camera::GetUp() const {
 	return up;
 }
-XMVECTOR Camera::GetLookXM() const {
+XMVECTOR XM_CALLCONV Camera::GetLookXM() const {
 	return XMLoadFloat3( &look );
 }
-XMFLOAT3 Camera::GetLook() const {
+XMFLOAT3 XM_CALLCONV Camera::GetLook() const {
 	return look;
 }
 float Camera::GetNearZ() const {
@@ -256,6 +251,6 @@ void XM_CALLCONV Camera::SetCamType() {
 	} 
 }
 
-void Camera::SetAspect( float iAspect ) {
+void XM_CALLCONV Camera::SetAspect(float iAspect) {
 	aspect = iAspect;
 }
