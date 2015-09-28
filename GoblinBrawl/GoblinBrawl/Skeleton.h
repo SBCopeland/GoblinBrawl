@@ -28,22 +28,12 @@ __declspec(align(16)) struct Bone {
 	std::vector<btTypedConstraint*>		joints;
 	std::string							name;
 	bool								dirty;
-};
-
-
-// TODO I think I can scrap this struct
-__declspec(align(16)) struct JointInfo {
-	btVector3	fromOffset;
-	btVector3	toOffset;
-	btScalar	aRotX;
-	btScalar	aRotY;
-	btScalar	aRotZ;
-	btScalar	bRotX;
-	btScalar	bRotY;
-	btScalar	bRotZ;
-	btScalar	swingLimit1;
-	btScalar	swingLimit2;
-	btScalar	twistLimit;
+	DirectX::XMFLOAT3					headW;
+	DirectX::XMFLOAT4					initialRotQuat;
+	DirectX::XMFLOAT4X4					initialRot;
+	btTransform							bodyToBoneOffset;
+	btTransform							btInitialBody;
+	btTransform							btInitialJointW;
 };
 
 __declspec(align(16)) struct MotorData {
@@ -112,13 +102,12 @@ public:
 		J_WRIST_R,
 		J_WRIST_L,
 		J_HAND_CLUB,
-		J_HIP_L,
 		J_HIP_R,
+		J_HIP_L,
 		J_KNEE_L,
 		J_KNEE_R,
 		J_ANKLE_L,
 		J_ANKLE_R,
-		J_CLUB,
 		JOINT_COUNT
 	};
 
@@ -147,8 +136,7 @@ private:
 	VOID CreateAllJoints();
 	void CreateBoneShape( SHAPE shape, Bone* target, float radius );
 	btRigidBody* CreateBoneBody( Bone* fromBone, Bone* toBone, btConvexShape* shape, float mass );
-	void CreateConstraint( JOINT joint, Bone* from, Bone* to, const JointInfo &jointInfo );
-	float GetBoneLength( Bone* bone );
+	btConeTwistConstraint* CreateConstraint( Bone* from, Bone* to );
 	void InitMotorData();
 	void UpdateMotorData();
 	void SetAllMotors(float dt);

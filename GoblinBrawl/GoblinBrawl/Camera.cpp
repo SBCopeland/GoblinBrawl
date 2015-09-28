@@ -16,12 +16,11 @@ Page Down		- turn down
 */
 
 Camera::Camera() :
-camType( 0 ),
-pos( 0.0f, 0.0f, 0.0f ),
-right( 0.0f, 0.0f, 1.0f ),
+camType(0),
+pos( 0.0f, 8.0f, 0.0f ),
+right( 1.0f, 0.0f, 0.0f ),
 up( 0.0f, 1.0f, 0.0f ),
-look( 0.0f, 0.0f, 0.0f ),
-pitch( 0.0f )
+look( 0.0f, 0.0f, 1.0f )
 {
 }
 

@@ -15,7 +15,6 @@ enum COLLIDE_MASK {
 	FIRE_PLINTH = 1<<3
 };
 
-
 class PhysicsWorld {
 public:
 	PhysicsWorld();

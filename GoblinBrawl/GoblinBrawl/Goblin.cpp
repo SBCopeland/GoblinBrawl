@@ -57,7 +57,7 @@ bool Goblin::Init( ModelLoader* modelLoader, ID3D11Device* device, Keyboard::Key
 	XMFLOAT4 goblinPos;
 	if( player==PLAYER_1 ) {
 		//goblinPos = XMFLOAT4( 0.f, 4.f, 0.f, 1.0f );
-		goblinPos = XMFLOAT4( 16.4867f, 5.9049f, -10.8f, 1.0f );
+		goblinPos = XMFLOAT4( 0.f, 4.f, 0.f, 1.0f );
 	} else {
 		goblinPos = XMFLOAT4( 20.f, 5.f, 10.f, 1.0f );
 	}
@@ -156,7 +156,7 @@ void XM_CALLCONV Goblin::Draw( FXMMATRIX viewProj, FXMVECTOR cameraPos, std::vec
 }
 
 void Goblin::Update( float dt ) {
-	fprintf( stdout, "DT : %f, Pos: %3.2f %3.2f %3.2f", dt, pos.r[3].m128_f32[0], pos.r[3].m128_f32[1], pos.r[3].m128_f32[2] );
+	fprintf( stdout, "DT : %f, Pos: %3.2f %3.2f %3.2f\n", dt, pos.r[3].m128_f32[0], pos.r[3].m128_f32[1], pos.r[3].m128_f32[2] );
 	UpdateActions();
 	fsm->Update( dt );
 	skeleton->SetRootTransform( GetWorld() );
