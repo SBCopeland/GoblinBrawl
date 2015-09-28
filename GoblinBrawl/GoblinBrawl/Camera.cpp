@@ -16,11 +16,12 @@ Page Down		- turn down
 */
 
 Camera::Camera() :
-camType(0),
-pos( 0.0f, 8.0f, 0.0f ),
+camType( 0 ),
+pos( 0.0f, 0.0f, 0.0f ),
 right( 0.0f, 0.0f, 1.0f ),
 up( 0.0f, 1.0f, 0.0f ),
-look( -1.0f, 0.0f, 0.0f )
+look( 0.0f, 0.0f, 0.0f ),
+pitch( 0.0f )
 {
 }
 
@@ -28,12 +29,13 @@ Camera::~Camera() {}
 
 void Camera::Init(float aspectRatio) {
 	SetAspect( aspectRatio );
-	
 	SetLens( 0.25 * 3.14, aspect, 1.0f, 1000.0f );
-	UpdateViewMatrix();
 }
 
-void XM_CALLCONV Camera::Update( float deltaTime ) {
+void XM_CALLCONV Camera::Update( float deltaTime, FXMVECTOR player1Pos, FXMVECTOR player2Pos ) {
+
+	target1 = player1Pos;
+	target2 = player2Pos;
 
 	if( GetAsyncKeyState( VK_HOME ) ) {
 		SetCamType();
@@ -68,15 +70,27 @@ void XM_CALLCONV Camera::Update( float deltaTime ) {
 	} else {
 
 		// default camera
+		// reset all settings
 		
-		//XMStoreFloat3( &target1, goblin1Pos);
-		//XMVECTOR posV = XMLoadFloat3( &pos );
-		//XMVECTOR targetV = goblin1Pos;
-		//XMVECTOR upV = GetUpXM();
-		//LookAt( posV, targetV, upV );
+		SetPos( 0.0f, 10.0f, 0.0f );
+		
+		LookAt( GetPosXM(), -(target1), GetUpXM() );
+		
 	}
 
 	UpdateViewMatrix();
+}
+
+void Camera::SetLens( float ifovAngleY, float iaspect, float inear, float ifar ) {
+	fovY = ifovAngleY;
+	aspect = iaspect;
+	nearZ = inear;
+	farZ = ifar;
+	nearWindowHeight = 2.0f * nearZ * tanf( 0.5f * fovY );
+	farWindowHeight = 2.0f * farZ * tanf( 0.5f * fovY );
+
+	XMMATRIX P = XMMatrixPerspectiveFovRH( fovY, aspect, nearZ, farZ );
+	XMStoreFloat4x4( &proj, P );
 }
 
 XMVECTOR Camera::GetPosXM() const {
@@ -136,18 +150,6 @@ float Camera::GetFarWindowWidth() const {
 }
 float Camera::GetFarWindowHeight() const {
 	return farWindowHeight;
-}
-
-void Camera::SetLens(float ifovAngleY, float iaspect, float inear, float ifar) {
-	fovY = ifovAngleY;
-	aspect = iaspect;
-	nearZ = inear;
-	farZ = ifar;
-	nearWindowHeight = 2.0f * nearZ * tanf( 0.5f * fovY );
-	farWindowHeight = 2.0f * farZ * tanf( 0.5f * fovY );
-
-	XMMATRIX P = XMMatrixPerspectiveFovRH( fovY, aspect, nearZ, farZ );
-	XMStoreFloat4x4( &proj, P );
 }
 
 void XM_CALLCONV Camera::LookAt( FXMVECTOR iPos, FXMVECTOR iTarget, FXMVECTOR iUp ) {
@@ -257,8 +259,4 @@ void XM_CALLCONV Camera::SetCamType() {
 
 void Camera::SetAspect( float iAspect ) {
 	aspect = iAspect;
-}
-
-void XM_CALLCONV Camera::SetGoblin1Pos( FXMVECTOR iGob1PosMatrix ) {
-	goblin1Pos = iGob1PosMatrix;
 }

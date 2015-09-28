@@ -9,7 +9,7 @@ public:
 	Camera();
 	~Camera();
 
-	void XM_CALLCONV Update( float deltaTime );
+	void XM_CALLCONV Update( float deltaTime, FXMVECTOR player1Pos, FXMVECTOR player2Pos );
 	void Init( float aspectRatio );
 	// Get/Set world camera position
 	XMVECTOR XM_CALLCONV GetPosXM() const;
@@ -47,18 +47,16 @@ public:
 	void XM_CALLCONV RotateY( float angle );
 	UINT XM_CALLCONV GetCamType() const;
 	void XM_CALLCONV SetCamType();
-	void XM_CALLCONV SetGoblin1Pos( FXMVECTOR iGob1PosMatrix );
 	void SetAspect( float iAspect );
 private:
-	XMVECTOR goblin1Pos;
 	UINT camType;
 	// co-ord system - relative to world space
 	XMFLOAT3 pos;
 	XMFLOAT3 right;
 	XMFLOAT3 up;
 	XMFLOAT3 look;
-	XMFLOAT3 target1;
-	XMFLOAT3 target2;
+	XMVECTOR target1;
+	XMVECTOR target2;
 	// view/proj matrices
 	XMFLOAT4X4 view;
 	XMFLOAT4X4 proj;
@@ -69,5 +67,6 @@ private:
 	float fovY;
 	float nearWindowHeight;
 	float farWindowHeight;
+	float pitch;
 
 };

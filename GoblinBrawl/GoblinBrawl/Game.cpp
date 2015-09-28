@@ -466,7 +466,10 @@ void Game::Update( float dt ) {
 	physicsWorld->Update( dt );
 	physicsWorld->RunDemo();
 
-	camera.Update( dt );
+	XMVECTOR fakePlayerPos; 
+	fakePlayerPos = goblin.getPos();
+
+	camera.Update( dt, goblin.getPos(), fakePlayerPos );
 }
 
 void Game::Draw() {
